@@ -14,7 +14,6 @@ Verify the functional correctness of the SM9 Java implementation, and evaluate t
 Supplement after graduation (2026), to verify correct output under standard valid inputs:
 - Valid user identity key generation
 - Normal message signature and verification
-- Standard key encapsulation and decapsulation
 - Signature consistency across multiple executions
 - Different identifiers producing different signatures
 
