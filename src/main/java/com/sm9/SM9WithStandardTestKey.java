@@ -14,7 +14,7 @@ import it.unisa.dia.gas.plaf.jpbc.util.Arrays;
  * SM9 algorithm.
  *
  * Show SM9 standard test data in console.
- *验证数字签名算法
+ *楠岃瘉鏁板瓧绛惧悕绠楁硶
  *
  */
 public class SM9WithStandardTestKey extends SM9 {
@@ -37,12 +37,12 @@ public class SM9WithStandardTestKey extends SM9 {
 
         // Step3 : g = e(P1, Ppub-s)
         Element g = mCurve.pairing(mCurve.P1, masterPublicKey.Q);
-        Main.showMsg("群GT中的元素 g:");
+        Main.showMsg("缇T涓殑鍏冪礌 g:");
         Main.showMsg(SM9Utils.toHexString(SM9Utils.GTFiniteElementToByte(g)));
 
         // Step4 : calculate t=g^h
         Element t = g.pow(signature.h);
-        Main.showMsg("群GT中的元素 t:");
+        Main.showMsg("缇T涓殑鍏冪礌 t:");
         Main.showMsg(SM9Utils.toHexString(SM9Utils.GTFiniteElementToByte(t)));
 
         // Step5 : calculate h1=H1(IDA||hid,N)
@@ -52,17 +52,17 @@ public class SM9WithStandardTestKey extends SM9 {
 
         // Step6 : P=[h1]P2+Ppubs
         CurveElement p = mCurve.P2.duplicate().mul(h1).add(masterPublicKey.Q);
-        Main.showMsg("群G2中的元素 p:");
+        Main.showMsg("缇2涓殑鍏冪礌 p:");
         Main.showMsg(SM9Utils.toHexString(SM9Utils.G2ElementToByte(p)));
 
         // Step7 : u=e(S,P)
         Element u = mCurve.pairing(signature.s, p);
-        Main.showMsg("群GT中的元素 u:");
+        Main.showMsg("缇T涓殑鍏冪礌 u:");
         Main.showMsg(SM9Utils.toHexString(SM9Utils.GTFiniteElementToByte(u)));
 
         // Step8 : w=u*t
         Element w2 = u.mul(t);
-        Main.showMsg("群GT中的元素 w':");
+        Main.showMsg("缇T涓殑鍏冪礌 w':");
         Main.showMsg(SM9Utils.toHexString(SM9Utils.GTFiniteElementToByte(w2)));
 
         // Step9 : h2=H2(M||w,N)
@@ -70,7 +70,7 @@ public class SM9WithStandardTestKey extends SM9 {
         Main.showMsg("h2:");
         Main.showMsg(SM9Utils.toHexString(SM9Utils.BigIntegerToBytes(h2)));
         if(h2.equals(signature.h))
-            Main.showMsg("h2 = h, 验证通过! \n");
+            Main.showMsg("h2 = h, 楠岃瘉閫氳繃! \n");
 
         return h2.equals(signature.h);
     }
