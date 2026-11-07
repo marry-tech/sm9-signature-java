@@ -1,15 +1,15 @@
 package com.aa;
 
-import cmo.test.SM9Test;
+import com.test.SM9Test;
 
 public class Main {
 	 public static void main(String[] args)
 	    {
-//	        SM9Test.test(0, false); //SM9²âÊÔ£¬Ëæ»úÉú³ÉÃÜÔ¿
+//	        SM9Test.test(0, false); //SM9æµ‹è¯•ï¼Œéšæœºç”Ÿæˆå¯†é’¥
 
-	        SM9Test.test(1, false); //SM9²âÊÔ£¬ÑéÖ¤¡¶GMT 0044-2016 SM9±êÊ¶ÃÜÂëËã·¨£ºµÚ5²¿·Ö ²ÎÊı¶¨Òå¡·ÖĞµÄ²âÊÔÊı¾İ
+	        SM9Test.test(1, false); //SM9æµ‹è¯•ï¼ŒéªŒè¯ã€ŠGMT 0044-2016 SM9æ ‡è¯†å¯†ç ç®—æ³•ï¼šç¬¬5éƒ¨åˆ† å‚æ•°å®šä¹‰ã€‹ä¸­çš„æµ‹è¯•æ•°æ®
 
-//	        SM9Test.test(1, true); //SM9²âÊÔ£¬¶ÔSM9ÖĞÉæ¼°µ½µÄÊı¾İ½á¹¹½øĞĞÖØ¹¹²âÊÔ
+//	        SM9Test.test(1, true); //SM9æµ‹è¯•ï¼Œå¯¹SM9ä¸­æ¶‰åŠåˆ°çš„æ•°æ®ç»“æ„è¿›è¡Œé‡æ„æµ‹è¯•
 	    }
 
 
