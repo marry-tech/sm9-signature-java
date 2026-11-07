@@ -1,22 +1,22 @@
 package com.transfer;
 	/**
-	 * String Óë byteÊı×éÖ®¼äµÄ£¨Ê®Áù½øÖÆ£©×ª»».
+	 * String ä¸ byteæ•°ç»„ä¹‹é—´çš„ï¼ˆåå…­è¿›åˆ¶ï¼‰è½¬æ¢.
 	 */
 public class transfer {
 		/**
-		 * ±àÂë.
+		 * ç¼–ç .
 		 *
-		 * @param data Ô­Ê¼Êı¾İ.
-		 * @return Ê®Áù½øÖÆ×Ö·û´®.
+		 * @param data åŸå§‹æ•°æ®.
+		 * @return åå…­è¿›åˆ¶å­—ç¬¦ä¸².
 		 */
 		public static String encodeToString(byte[] data) {
 			return encodeToString(data, false);
 		}
 		/**
-		 * ±àÂë.
+		 * ç¼–ç .
 		 *
-		 * @param data Ô­Ê¼Êı¾İ.
-		 * @return Ê®Áù½øÖÆ×Ö·û´®.
+		 * @param data åŸå§‹æ•°æ®.
+		 * @return åå…­è¿›åˆ¶å­—ç¬¦ä¸².
 		 */
 		public static String encodeToString(byte[] data, boolean isUpperCase) {
 			char[] digital = "0123456789abcdef".toCharArray();
@@ -34,20 +34,20 @@ public class transfer {
 		}
 
 		/**
-		 * ±àÂë.
+		 * ç¼–ç .
 		 *
-		 * @param data Ô­Ê¼Êı¾İ.
-		 * @return Ê®Áù½øÖÆÊı×é.
+		 * @param data åŸå§‹æ•°æ®.
+		 * @return åå…­è¿›åˆ¶æ•°ç»„.
 		 */
 		public static byte[] encode(byte[] data) {
 			return encodeToString(data).getBytes();
 		}
 
 		/**
-		 * ±àÂë.
+		 * ç¼–ç .
 		 *
-		 * @param data Ô­Ê¼Êı¾İ.
-		 * @return Ê®Áù½øÖÆÊı×é.
+		 * @param data åŸå§‹æ•°æ®.
+		 * @return åå…­è¿›åˆ¶æ•°ç»„.
 		 */
 		public static byte[] encode(byte[] data, boolean isUpperCase) {
 			return encodeToString(data, isUpperCase).getBytes();
@@ -55,11 +55,11 @@ public class transfer {
 
 
 		/**
-		 * String ÀàĞÍµÄÊ®Áù½øÖÆ×Ö·û´®×ª»»Îª byte ÄÚ´æÊı×é
+		 * String ç±»å‹çš„åå…­è¿›åˆ¶å­—ç¬¦ä¸²è½¬æ¢ä¸º byte å†…å­˜æ•°ç»„
 		 * 
 		 * @param hex
-		 *            String ÀàĞÍµÄÊ®Áù½øÖÆ×Ö·û´®.
-		 * @return byte ÄÚ´æÊı×é.
+		 *            String ç±»å‹çš„åå…­è¿›åˆ¶å­—ç¬¦ä¸².
+		 * @return byte å†…å­˜æ•°ç»„.
 		 */
 		public static byte[] decode(String hex) {
 			String digital = "0123456789abcdef";
