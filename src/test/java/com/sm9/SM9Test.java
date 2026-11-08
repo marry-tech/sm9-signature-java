@@ -1,4 +1,4 @@
-package cmo.test;
+package com.sm9;
 import java.math.BigInteger;
 
 import com.aa.Main;
@@ -15,48 +15,48 @@ import com.sm9.SM9WithStandardTestKey;
 import com.sm9.SM9Curve;
 
 /**
- * SM9 Ëã·¨²âÊÔ.
+ * SM9 ç®—æ³•æµ‹è¯•.
  *
- * @param testType 1-SM9¹úÃÜ±ê×¼Êı¾İ²âÊÔ£¬Ëæ»úÊıÒÑÖ¸¶¨; ÆäËûÖµ-ÆÕÍ¨²âÊÔ£¬Ëæ»úÉú³ÉÃÜÔ¿;
- * @param allowReconstructData ÔÚ testType Îª1Ê±£¬Ë³±ã½øĞĞSM9Ëã·¨ÖĞµÄÃÜÔ¿ºÍ½á¹ûÖµµÄÖØ¹¹²âÊÔ
+ * @param testType 1-SM9å›½å¯†æ ‡å‡†æ•°æ®æµ‹è¯•ï¼Œéšæœºæ•°å·²æŒ‡å®š; å…¶ä»–å€¼-æ™®é€šæµ‹è¯•ï¼Œéšæœºç”Ÿæˆå¯†é’¥;
+ * @param allowReconstructData åœ¨ testType ä¸º1æ—¶ï¼Œé¡ºä¾¿è¿›è¡ŒSM9ç®—æ³•ä¸­çš„å¯†é’¥å’Œç»“æœå€¼çš„é‡æ„æµ‹è¯•
  */
 
 
 public class SM9Test {
 	  public static void test_sm9_sign(KGC kgc, SM9 sm9) throws Exception {
 	        Main.showMsg("\n");
-	        Main.showMsg("SM9Ç©Ãû²âÊÔ\n");
+	        Main.showMsg("SM9ç­¾åæµ‹è¯•\n");
 
 	        String id_A = "Alice";
 
-	        //Éú³ÉÇ©ÃûÖ÷ÃÜÔ¿¶Ô
+	        //ç”Ÿæˆç­¾åä¸»å¯†é’¥å¯¹
 	        MasterKeyPair signMasterKeyPair = kgc.genSignMasterKeyPair();
-	        Main.showMsg("Ç©ÃûÖ÷Ë½Ô¿ ks:");
+	        Main.showMsg("ç­¾åä¸»ç§é’¥ ks:");
 	        Main.showMsg(signMasterKeyPair.getPrivateKey().toString());
-	        Main.showMsg("Ç©ÃûÖ÷¹«Ô¿ Ppub-s:");
+	        Main.showMsg("ç­¾åä¸»å…¬é’¥ Ppub-s:");
 	        Main.showMsg(signMasterKeyPair.getPublicKey().toString());
 
-	        //ÏÔÊ¾IDĞÅÏ¢
-	        Main.showMsg("ÊµÌåAµÄ±êÊ¶IDA:");
+	        //æ˜¾ç¤ºIDä¿¡æ¯
+	        Main.showMsg("å®ä½“Açš„æ ‡è¯†IDA:");
 	        Main.showMsg(id_A);
 
-	        //Éú³ÉÇ©ÃûË½Ô¿
+	        //ç”Ÿæˆç­¾åç§é’¥
 	        PrivateKey signPrivateKey = kgc.genPrivateKey(signMasterKeyPair.getPrivateKey(), id_A, PrivateKeyType.KEY_SIGN);
-	        Main.showMsg("Ç©ÃûË½Ô¿ ds_A:");
+	        Main.showMsg("ç­¾åç§é’¥ ds_A:");
 	        Main.showMsg(signPrivateKey.toString());
 
 
-	        //Ç©Ãû
-	        Main.showMsg("Ç©Ãû²½ÖèÖĞµÄÏà¹ØÖµ:");
+	        //ç­¾å
+	        Main.showMsg("ç­¾åæ­¥éª¤ä¸­çš„ç›¸å…³å€¼:");
 	        String msg = "Chinese IBS standard";
-	        Main.showMsg("´ıÇ©ÃûÏûÏ¢ M:");
+	        Main.showMsg("å¾…ç­¾åæ¶ˆæ¯ M:");
 	        Main.showMsg(msg);
 
 	        ResultSignature signature = sm9.sign(signMasterKeyPair.getPublicKey(), signPrivateKey, msg.getBytes());
-	        Main.showMsg("ÏûÏ¢MµÄÇ©ÃûÎª(h,s):");
+	        Main.showMsg("æ¶ˆæ¯Mçš„ç­¾åä¸º(h,s):");
 	        Main.showMsg(signature.toString());
 
-	        //ÑéÇ©
+	        //éªŒç­¾
 	        if(sm9.verify(signMasterKeyPair.getPublicKey(), id_A, msg.getBytes(), signature))
 	            Main.showMsg("verify OK");
 	        else
@@ -64,47 +64,47 @@ public class SM9Test {
 	    }
 	  public static void test_sm9_sign_standard(KGC kgc, SM9 sm9) throws Exception {
 	        Main.showMsg("\n");
-	        Main.showMsg("SM9Ç©Ãû²âÊÔ\n");
+	        Main.showMsg("SM9ç­¾åæµ‹è¯•\n");
 
 	        String id_A = "Alice";
 
-	        Main.showMsg("Ç©ÃûÖ÷ÃÜÔ¿ºÍÓÃ»§Ç©ÃûË½Ô¿²úÉú¹ı³ÌÖĞµÄÏà¹ØÖµ:");
+	        Main.showMsg("ç­¾åä¸»å¯†é’¥å’Œç”¨æˆ·ç­¾åç§é’¥äº§ç”Ÿè¿‡ç¨‹ä¸­çš„ç›¸å…³å€¼:");
 
-	        //Éú³ÉÇ©ÃûÖ÷ÃÜÔ¿¶Ô
+	        //ç”Ÿæˆç­¾åä¸»å¯†é’¥å¯¹
 	        KGCWithStandardTestKey.k= new BigInteger("0130E78459D78545CB54C587E02CF480CE0B66340F319F348A1D5B1F2DC5F4", 16);
 	        MasterKeyPair signMasterKeyPair = kgc.genSignMasterKeyPair();
-	        Main.showMsg("Ç©ÃûÖ÷Ë½Ô¿ ks:");
+	        Main.showMsg("ç­¾åä¸»ç§é’¥ ks:");
 	        Main.showMsg(signMasterKeyPair.getPrivateKey().toString());
-	        Main.showMsg("Ç©ÃûÖ÷¹«Ô¿ Ppub-s:");
+	        Main.showMsg("ç­¾åä¸»å…¬é’¥ Ppub-s:");
 	        Main.showMsg(signMasterKeyPair.getPublicKey().toString());
 
-	        //ÏÔÊ¾IDĞÅÏ¢
-	        Main.showMsg("ÊµÌåAµÄ±êÊ¶IDA:");
+	        //æ˜¾ç¤ºIDä¿¡æ¯
+	        Main.showMsg("å®ä½“Açš„æ ‡è¯†IDA:");
 	        Main.showMsg(id_A);
-	        Main.showMsg("IDAµÄ16½øÖÆ±íÊ¾");
+	        Main.showMsg("IDAçš„16è¿›åˆ¶è¡¨ç¤º");
 	        Main.showMsg(SM9Utils.toHexString(id_A.getBytes()));
 
-	        //Éú³ÉÇ©ÃûË½Ô¿
+	        //ç”Ÿæˆç­¾åç§é’¥
 	        PrivateKey signPrivateKey = kgc.genPrivateKey(signMasterKeyPair.getPrivateKey(), id_A, PrivateKeyType.KEY_SIGN);
-	        Main.showMsg("Ç©ÃûË½Ô¿ ds_A:");
+	        Main.showMsg("ç­¾åç§é’¥ ds_A:");
 	        Main.showMsg(signPrivateKey.toString());
 
 
-	        //Ç©Ãû
-	        Main.showMsg("Ç©Ãû²½ÖèÖĞµÄÏà¹ØÖµ:");
+	        //ç­¾å
+	        Main.showMsg("ç­¾åæ­¥éª¤ä¸­çš„ç›¸å…³å€¼:");
 	        String msg = "Chinese IBS standard";
-	        Main.showMsg("´ıÇ©ÃûÏûÏ¢ M:");
+	        Main.showMsg("å¾…ç­¾åæ¶ˆæ¯ M:");
 	        Main.showMsg(msg);
-	        Main.showMsg("MµÄ16½øÖÆ±íÊ¾");
+	        Main.showMsg("Mçš„16è¿›åˆ¶è¡¨ç¤º");
 	        Main.showMsg(SM9Utils.toHexString(msg.getBytes()));
 	        SM9WithStandardTestKey.r = new BigInteger("033C8616B06704813203DFD00965022ED15975C662337AED648835DC4B1CBE", 16);
 	        ResultSignature signature = sm9.sign(signMasterKeyPair.getPublicKey(), signPrivateKey, msg.getBytes());
-	        Main.showMsg("ÏûÏ¢MµÄÇ©ÃûÎª(h,s):");
+	        Main.showMsg("æ¶ˆæ¯Mçš„ç­¾åä¸º(h,s):");
 	        Main.showMsg(signature.toString());
 
 
-	        //ÑéÇ©
-	        Main.showMsg("ÑéÖ¤²½ÖèÖĞµÄÏà¹ØÖµ:");
+	        //éªŒç­¾
+	        Main.showMsg("éªŒè¯æ­¥éª¤ä¸­çš„ç›¸å…³å€¼:");
 	        if(sm9.verify(signMasterKeyPair.getPublicKey(), id_A, msg.getBytes(), signature))
 	            Main.showMsg("verify OK");
 	        else
@@ -113,77 +113,77 @@ public class SM9Test {
 
 	    public static void test_sm9_sign_re(KGC kgc, SM9 sm9) throws Exception {
 	        Main.showMsg("\n");
-	        Main.showMsg("SM9Ç©Ãû²âÊÔ\n");
+	        Main.showMsg("SM9ç­¾åæµ‹è¯•\n");
 
 	        String id_A = "Alice";
 
-	        Main.showMsg("Ç©ÃûÖ÷ÃÜÔ¿ºÍÓÃ»§Ç©ÃûË½Ô¿²úÉú¹ı³ÌÖĞµÄÏà¹ØÖµ:");
+	        Main.showMsg("ç­¾åä¸»å¯†é’¥å’Œç”¨æˆ·ç­¾åç§é’¥äº§ç”Ÿè¿‡ç¨‹ä¸­çš„ç›¸å…³å€¼:");
 
-	        //Éú³ÉÇ©ÃûÖ÷ÃÜÔ¿¶Ô
+	        //ç”Ÿæˆç­¾åä¸»å¯†é’¥å¯¹
 	        KGCWithStandardTestKey.k= new BigInteger("0130E78459D78545CB54C587E02CF480CE0B66340F319F348A1D5B1F2DC5F4", 16);
 	        MasterKeyPair signMasterKeyPair = kgc.genSignMasterKeyPair();
-	        Main.showMsg("Ç©ÃûÖ÷Ë½Ô¿ ks:");
+	        Main.showMsg("ç­¾åä¸»ç§é’¥ ks:");
 	        Main.showMsg(signMasterKeyPair.getPrivateKey().toString());
-	        Main.showMsg("Ç©ÃûÖ÷¹«Ô¿ Ppub-s:");
+	        Main.showMsg("ç­¾åä¸»å…¬é’¥ Ppub-s:");
 	        Main.showMsg(signMasterKeyPair.getPublicKey().toString());
-	        Main.showMsg("ÊµÌåAµÄ±êÊ¶IDA:");
+	        Main.showMsg("å®ä½“Açš„æ ‡è¯†IDA:");
 	        Main.showMsg(id_A);
-	        Main.showMsg("IDAµÄ16½øÖÆ±íÊ¾");
+	        Main.showMsg("IDAçš„16è¿›åˆ¶è¡¨ç¤º");
 	        Main.showMsg(SM9Utils.toHexString(id_A.getBytes()));
 
 
-	        //ÖØ¹¹Ç©ÃûÖ÷ÃÜÔ¿¶Ô
-	        Main.showMsg("Ö÷ÃÜÔ¿¶ÔÖØ¹¹²âÊÔ:");
+	        //é‡æ„ç­¾åä¸»å¯†é’¥å¯¹
+	        Main.showMsg("ä¸»å¯†é’¥å¯¹é‡æ„æµ‹è¯•:");
 	        MasterKeyPair signMasterKeyPair0 = MasterKeyPair.fromByteArray(kgc.getCurve(), signMasterKeyPair.toByteArray());
-	        Main.showMsg("ÖØ¹¹ºóµÄÖ÷ÃÜÔ¿:");
+	        Main.showMsg("é‡æ„åçš„ä¸»å¯†é’¥:");
 	        Main.showMsg(signMasterKeyPair0.toString());
 
 
-	        //Éú³ÉÇ©ÃûË½Ô¿
-	        Main.showMsg("Ê¹ÓÃÖØ¹¹ºóµÄÇ©ÃûÖ÷ÃÜÔ¿¶ÔµÄË½Ô¿Éú³ÉÇ©ÃûË½Ô¿:");
+	        //ç”Ÿæˆç­¾åç§é’¥
+	        Main.showMsg("ä½¿ç”¨é‡æ„åçš„ç­¾åä¸»å¯†é’¥å¯¹çš„ç§é’¥ç”Ÿæˆç­¾åç§é’¥:");
 	        PrivateKey signPrivateKey = kgc.genPrivateKey(signMasterKeyPair0.getPrivateKey(), id_A, PrivateKeyType.KEY_SIGN);
-	        Main.showMsg("Ç©ÃûË½Ô¿ ds_A:");
+	        Main.showMsg("ç­¾åç§é’¥ ds_A:");
 	        Main.showMsg(signPrivateKey.toString());
 
 
-	        //ÖØ¹¹Ç©ÃûÖ÷¹«Ô¿
-	        Main.showMsg("Ç©ÃûÖ÷¹«Ô¿ÖØ¹¹²âÊÔ:");
+	        //é‡æ„ç­¾åä¸»å…¬é’¥
+	        Main.showMsg("ç­¾åä¸»å…¬é’¥é‡æ„æµ‹è¯•:");
 	        MasterPublicKey masterPublicKey = MasterPublicKey.fromByteArray(sm9.getCurve(), signMasterKeyPair.getPublicKey().toByteArray());
-	        Main.showMsg("ÖØ¹¹ºóµÄÇ©ÃûÖ÷¹«Ô¿:");
+	        Main.showMsg("é‡æ„åçš„ç­¾åä¸»å…¬é’¥:");
 	        Main.showMsg(masterPublicKey.toString());
 
 
-	        //ÖØ¹¹Ç©ÃûË½Ô¿
-	        Main.showMsg("Ç©ÃûË½Ô¿ÖØ¹¹²âÊÔ:");
+	        //é‡æ„ç­¾åç§é’¥
+	        Main.showMsg("ç­¾åç§é’¥é‡æ„æµ‹è¯•:");
 	        PrivateKey signPrivateKey0 = PrivateKey.fromByteArray(kgc.getCurve(), signPrivateKey.toByteArray());
-	        Main.showMsg("ÖØ¹¹ºóµÄÇ©ÃûË½Ô¿:");
+	        Main.showMsg("é‡æ„åçš„ç­¾åç§é’¥:");
 	        Main.showMsg(signPrivateKey0.toString());
 
 
-	        //Ç©Ãû
-	        Main.showMsg("Ê¹ÓÃÖØ¹¹ºóµÄÇ©ÃûÖ÷¹«Ô¿ºÍÖØ¹¹ºóµÄÇ©ÃûË½Ô¿½øĞĞÇ©Ãû:");
-	        Main.showMsg("Ç©Ãû²½ÖèÖĞµÄÏà¹ØÖµ:");
+	        //ç­¾å
+	        Main.showMsg("ä½¿ç”¨é‡æ„åçš„ç­¾åä¸»å…¬é’¥å’Œé‡æ„åçš„ç­¾åç§é’¥è¿›è¡Œç­¾å:");
+	        Main.showMsg("ç­¾åæ­¥éª¤ä¸­çš„ç›¸å…³å€¼:");
 	        String msg = "Chinese IBS standard";
-	        Main.showMsg("´ıÇ©ÃûÏûÏ¢ M:");
+	        Main.showMsg("å¾…ç­¾åæ¶ˆæ¯ M:");
 	        Main.showMsg(msg);
-	        Main.showMsg("MµÄ16½øÖÆ±íÊ¾");
+	        Main.showMsg("Mçš„16è¿›åˆ¶è¡¨ç¤º");
 	        Main.showMsg(SM9Utils.toHexString(msg.getBytes()));
 	        SM9WithStandardTestKey.r = new BigInteger("033C8616B06704813203DFD00965022ED15975C662337AED648835DC4B1CBE", 16);
 	        ResultSignature signature = sm9.sign(masterPublicKey, signPrivateKey0, msg.getBytes());
-	        Main.showMsg("ÏûÏ¢MµÄÇ©ÃûÎª(h,s):");
+	        Main.showMsg("æ¶ˆæ¯Mçš„ç­¾åä¸º(h,s):");
 	        Main.showMsg(signature.toString());
 
 
-	        //ÖØ¹¹Ç©Ãû½á¹ûÖµ
-	        Main.showMsg("Ç©Ãû½á¹ûÖµÖØ¹¹²âÊÔ:");
+	        //é‡æ„ç­¾åç»“æœå€¼
+	        Main.showMsg("ç­¾åç»“æœå€¼é‡æ„æµ‹è¯•:");
 	        ResultSignature signature1 = ResultSignature.fromByteArray(sm9.getCurve(), signature.toByteArray());
-	        Main.showMsg("ÖØ¹¹ºóµÄÇ©ÃûÖµ:");
+	        Main.showMsg("é‡æ„åçš„ç­¾åå€¼:");
 	        Main.showMsg(signature1.toString());
 
 
-	        //ÑéÇ©
-	        Main.showMsg("Ê¹ÓÃÖØ¹¹ºóµÄÇ©ÃûÖ÷¹«Ô¿ºÍÖØ¹¹ºóµÄÇ©ÃûÖµ½øĞĞÑéÇ©:");
-	        Main.showMsg("ÑéÖ¤²½ÖèÖĞµÄÏà¹ØÖµ:");
+	        //éªŒç­¾
+	        Main.showMsg("ä½¿ç”¨é‡æ„åçš„ç­¾åä¸»å…¬é’¥å’Œé‡æ„åçš„ç­¾åå€¼è¿›è¡ŒéªŒç­¾:");
+	        Main.showMsg("éªŒè¯æ­¥éª¤ä¸­çš„ç›¸å…³å€¼:");
 	        if(sm9.verify(masterPublicKey, id_A, msg.getBytes(), signature1))
 	            Main.showMsg("verify OK");
 	        else
