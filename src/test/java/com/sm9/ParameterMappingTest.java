@@ -55,7 +55,7 @@ public class ParameterMappingTest {
         String q = params.getString("q");
 
         // SM9 field order q should be approximately 256 bits
-        // Log2(10) ¡Ö 3.32, so 77 decimal digits ¡Ö 256 bits
+        // Log2(10) Â¡Ã– 3.32, so 77 decimal digits Â¡Ã– 256 bits
         assertTrue("SM9 field order should be around 256 bits",
                 q.length() >= 70 && q.length() <= 80);
     }
