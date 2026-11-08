@@ -1,4 +1,4 @@
-package com.test;
+package com.sm9;
 
 import com.sm9.SM9CurveParameters;
 
