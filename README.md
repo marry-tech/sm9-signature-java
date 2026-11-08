@@ -44,6 +44,7 @@ mvn test -Dtest=SM9ExceptionTest
 mvn test -Dtest=SM9ConformanceTest
 mvn test -Dtest=ParameterMappingTest
 ```
+Verified locally: `mvn test` on Maven 3.9.6 / JDK 11 6 → 37 tests, 0 failures.
 
 ## Project Structure
 
