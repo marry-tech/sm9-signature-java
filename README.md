@@ -79,7 +79,10 @@ docs/
 ## Key Technical Notes
 
 **JPBC default parameters are NOT compatible with SM9.** JPBC's built-in Type-A curve uses a pre-configured parameter set optimized for general pairing-based cryptography, but it does not conform to the SM9 national standard. The field order, subgroup order and base point configuration are all different. This project uses a custom `PropertiesParameters` configuration that maps the SM9 standard parameters into JPBC's format. A comparison utility is included to show the differences side-by-side.
+
 The signature scheme uses the SM3 cryptographic hash function (GM/T 0004) via BouncyCastle, rather than SHA-256 as used in generic pairing-based constructions.
+
+The implementation reproduces the official deterministic test vector from GM/T 0044.2 Appendix D (fixed random values k and r). Running the `com.aa.Main` demo outputs `h2 = h` and `verify OK`, confirming the signature and verification steps match the standard specification.
 
 ## Limitations
 
