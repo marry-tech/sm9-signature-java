@@ -12,3 +12,5 @@ bin/
 build/
 .DS_Store
 *.log
+# Keep vendored JPBC jars tracked
+!lib/*.jar
