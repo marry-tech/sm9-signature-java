@@ -73,3 +73,20 @@ Simple input-output testing can verify that an implementation produces correct o
 - Compliance with formal security proofs
 
 For high-security software such as cryptographic components, systematic reliability verification requires formal methods, fault modeling, protocol consistency analysis and structured quality assurance methodology. This is the area I plan to focus on in future work.
+
+## Test Design Methodology
+This test suite is designed according to the risk-guided sampling principle taught in the Software Engineering course:
+- Functional tests cover the nominal happy path, which is necessary but insufficient.
+- Boundary tests follow equivalence partitioning and boundary-value analysis to catch failures at input edges.
+- Exception tests verify that failure modes are predictable and explicit, not silent.
+- Conformance tests anchor the implementation against the GM/T 0044 standard structure.
+- Parameter mapping tests validate that the underlying curve configuration matches the specification rather than the library default.
+
+## Limitations & What I Learned
+Black-box functional testing alone cannot guarantee cryptographic correctness:
+- It cannot detect subtle deviations in group arithmetic that still produce internally consistent outputs.
+- It does not cover side-channel resistance, timing leaks or implementation-level vulnerabilities.
+- Failure modes are not systematically classified; there is no formal failure model.
+
+This gap is exactly why I am applying for graduate study in software verification and complex systems engineering: I want to move from ad-hoc black-box testing to systematic methodologies for reliability assessment.
+
