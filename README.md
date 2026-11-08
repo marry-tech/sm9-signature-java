@@ -14,6 +14,8 @@ After graduation, I interviewed for IT positions at state-owned enterprises. Dur
 
 I returned to this SM9 project in 2026 and treated it as a controlled experiment: what would it take to verify that this implementation is not just functionally correct, but handles failures predictably? I added explicit input validation to core methods, then designed and wrote 37 JUnit tests covering normal operation, boundary inputs, exception scenarios, conformance checks and parameter mapping. I documented the process and limitations in an English-language test report. This experiment confirmed that systematic reliability verification requires structured methodological training beyond what I could acquire through unstructured self-study.
 
+The standard test-vector verification harness (`cmo/test/SM9Test.java`, `SM9WithStandardTestKey`, `KGCWithStandardTestKey`) comes from the reference SM9 implementation and is included to reproduce the published GM/T 0044 test vectors. The JUnit test suite, input validation, project structure reorganization, README and test report are my own work.
+
 ## What This Repository Includes
 
 - **Core Implementation:** SM9 key generation center, signature generation and verification (Java)
