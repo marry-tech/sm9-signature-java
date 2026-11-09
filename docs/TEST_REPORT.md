@@ -1,92 +1,48 @@
-# SM9 Implementation Test Report
+# SM9 Signature Test Report
 
-## Test Objective
-Verify the functional correctness of the SM9 Java implementation, and evaluate the coverage and limitations of conventional testing methods for cryptographic software reliability.
+## Overview
+This test suite was designed to verify that the SM9 signature implementation behaves predictably across both normal and failure conditions. It was built in two stages:
+- Basic boundary checks added during the original thesis work (2022)
+- Full systematic expansion into 37 cases during the November 2026 revision
 
-## Test Environment
-- JDK version: Java 8
-- Dependencies: JPBC library 2.0.0
-- Reference standard: GM/T 0044 SM9 national cryptographic specification
+## Test Design Approach
 
-## Test Case Classification
+The design follows the basic testing principles I learned in my undergraduate Software Engineering course:
+1.  **Happy path first**: verify that the normal sign-verify flow works correctly
+2.  **Equivalence partitioning & boundary value analysis**: test the edges of input domains, where bugs most often appear
+3.  **Negative testing**: confirm that invalid inputs and tampered data are correctly rejected
+4.  **Configuration verification**: confirm the underlying curve uses SM9 standard parameters, not the library defaults
 
-### 1. Normal Functional Tests (6 tests)
-Supplement after graduation (2026), to verify correct output under standard valid inputs:
-- Valid user identity key generation
-- Normal message signature and verification
-- Signature consistency across multiple executions
-- Different identifiers producing different signatures
+### Test breakdown
+| Test class | Count | Focus |
+|---|---|---|
+| Functional tests | 6 | Normal key generation, signing, verification with valid inputs |
+| Boundary tests | 13 | Null values, empty strings, oversized messages, Unicode user IDs |
+| Exception tests | 7 | Tampered signatures, wrong public keys, altered messages, signature reuse |
+| Conformance tests | 6 | Group membership checks for G1 / G2 / Zr, standard identifier validation |
+| Parameter mapping tests | 5 | Curve parameter validation, comparison against JPBC Type-A defaults |
+| **Total** | **37** | |
 
-Result: All standard test cases pass, output is consistent with expected results.
+## Results
+All 37 tests pass on a clean build.
+- Valid signatures are always accepted
+- Invalid inputs throw explicit, predictable exceptions
+- Tampered signatures and wrong identities are always rejected
+- The curve parameters match the SM9 standard definition
 
-### 2. Boundary Condition Tests (13 tests)
-Supplement after graduation (2026), to examine system stability at input boundaries:
-- Empty string and null as user identity
-- Minimum-length and maximum-length message input
-- Identity string with special characters and unicode
-- Edge values of valid parameter range
+## Observations & Limitations
 
-Result: Boundary cases trigger expected error states; explicit input validation prevents silent failures. A few edge scenarios rely on underlying library exception handling.
+### What this testing does prove
+- The main flow works end-to-end
+- Common user mistakes (null inputs, wrong IDs, tampered messages) fail clearly instead of silently
+- The library is configured with the correct standard parameters, not the JPBC defaults
 
-### 3. Exception Path Tests (7 tests)
-Supplement after graduation (2026), to examine fault handling capability under attack scenarios:
-- Tampered signature components (modified h or S)
-- Verification with wrong master public key
-- Verification with mismatched user identity
-- Verification with altered message (replay scenario)
-- Reused signature for different message
-- Single-byte message edge case
+### What this testing does NOT prove
+This is the most important part. Black-box functional testing alone is not enough to guarantee cryptographic correctness:
+1.  It cannot catch subtle arithmetic errors that still produce internally consistent outputs. As long as sign and verify use the same flawed math, they will still match.
+2.  It says nothing about side-channel resistance, timing leaks or memory safety issues.
+3.  There is no systematic failure model. I am checking individual failure points one by one, not reasoning about the full failure space.
 
-Result: Exception paths trigger appropriate error responses, but lack systematic failure classification and formal verification.
+When I started this revision I thought more test cases would equal more reliability. After finishing I realized that without a proper methodology for verification, testing can only give you confidence in the cases you already thought of — not the ones you didn't.
 
-### 4. Conformance Tests (6 tests)
-Supplement after graduation (2026), to verify algebraic structure compliance with GM/T 0044:
-- Group membership verification for private keys (G1, G2, Zr)
-- Pairing equation consistency checks
-- Standard test vector validation
-- Signature component structure verification
-
-Result: Conformance checks pass when SM9-specific parameters are correctly configured.
-
-### 5. Parameter Mapping Tests (5 tests)
-Supplement after graduation (2026), to verify explicit parameter configuration:
-- JPBC default Type-A parameters vs SM9 standard definition
-- Field order, subgroup order and base point comparison
-- Configuration validation for correct curve setup
-- Test vector compatibility with mapped parameters
-
-Result: SM9 parameters are explicitly mapped and differ from JPBC defaults. Standard test vectors pass only with correct parameter configuration.
-
-## Test Coverage Summary
-- Functional correctness: fully covered (6 tests)
-- Boundary scenarios: covered (13 tests)
-- Exception and failure modes: covered (7 tests)
-- Conformance and protocol consistency: covered (6 tests)
-- Parameter mapping verification: covered (5 tests)
-- Formal verification: cannot be achieved by black-box testing alone
-
-## Limitation Reflection
-Simple input-output testing can verify that an implementation produces correct output for given input, but it cannot guarantee:
-- Mathematical correctness of the underlying protocol
-- Absence of side-channel vulnerabilities
-- Robustness under all possible attack scenarios
-- Compliance with formal security proofs
-
-For high-security software such as cryptographic components, systematic reliability verification requires formal methods, fault modeling, protocol consistency analysis and structured quality assurance methodology. This is the area I plan to focus on in future work.
-
-## Test Design Methodology
-This test suite is designed according to the risk-guided sampling principle taught in the Software Engineering course:
-- Functional tests cover the nominal happy path, which is necessary but insufficient.
-- Boundary tests follow equivalence partitioning and boundary-value analysis to catch failures at input edges.
-- Exception tests verify that failure modes are predictable and explicit, not silent.
-- Conformance tests anchor the implementation against the GM/T 0044 standard structure.
-- Parameter mapping tests validate that the underlying curve configuration matches the specification rather than the library default.
-
-## Limitations & What I Learned
-Black-box functional testing alone cannot guarantee cryptographic correctness:
-- It cannot detect subtle deviations in group arithmetic that still produce internally consistent outputs.
-- It does not cover side-channel resistance, timing leaks or implementation-level vulnerabilities.
-- Failure modes are not systematically classified; there is no formal failure model.
-
-This gap is exactly why I am applying for graduate study in software verification and complex systems engineering: I want to move from ad-hoc black-box testing to systematic methodologies for reliability assessment.
-
+This is exactly the gap I hope to fill through graduate study: moving from ad-hoc, case-by-case testing to systematic, principled approaches for software verification and system dependability.
