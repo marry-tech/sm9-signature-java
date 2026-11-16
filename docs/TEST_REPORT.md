@@ -46,3 +46,22 @@ This is the most important part. Black-box functional testing alone is not enoug
 When I started this revision I thought more test cases would equal more reliability. After finishing I realized that without a proper methodology for verification, testing can only give you confidence in the cases you already thought of — not the ones you didn't.
 
 This is exactly the gap I hope to fill through graduate study: moving from ad-hoc, case-by-case testing to systematic, principled approaches for software verification and system dependability.
+
+## Robustness Testing
+
+Five additional tests assess behaviour under malformed or unexpected input encoding.
+
+| Test ID | Input | Ideal Behaviour | Actual Behaviour | Gap Identified |
+|---------|-------|----------------|------------------|---------------|
+| R-01 | Identity with control characters (`\u0000\u0001\u0002\u0003`) | Reject with exception | **Accepted and processed** | No validation for non-printable characters |
+| R-02 | Mixed UTF-8/ASCII message | Normal sign/verify | Pass | — |
+| R-03 | Arbitrary byte sequence (`0xFF, 0xFE, 0xFD`) | Reject or handle safely | **Accepted as opaque data** | No message content validation |
+| R-04 | Single-byte message | Normal sign/verify | Pass | — |
+| R-05 | Whitespace-only identity (`"   "`) | Reject with exception | **Accepted and processed** | No distinction between empty and whitespace |
+
+**Finding:** The original implementation (based on CSDN reference materials) does not 
+perform deep input sanitisation beyond null and empty-string checks. R-01, R-03 and 
+R-05 reveal that malformed or edge-case inputs are silently accepted rather than 
+rejected. This is a defensive-validation gap: the code does not crash, but it also 
+does not enforce strict input hygiene. Systematic robustness engineering requires 
+explicit rejection policies for each input domain, not just functional-path coverage.
