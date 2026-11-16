@@ -14,6 +14,13 @@ import static org.junit.Assert.*;
  * These tests document the technical reason for explicit parameter
  * configuration instead of using JPBC's built-in defaults.
  */
+/**
+ * Parameter mapping tests for SM9 curve configuration in JPBC.
+ * Traceability: Verifies that SM9 standard parameters are correctly mapped into 
+ * JPBC's Type-A curve format.
+ * Risk if violated: JPBC default parameters are used instead of SM9 standard 
+ * parameters, invalidating all cryptographic operations.
+ */
 public class ParameterMappingTest {
 
     @Test
