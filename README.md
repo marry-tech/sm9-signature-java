@@ -1,108 +1,80 @@
-# SM9 Identity-Based Signature: Testing & Reliability Revision
+# SM9 Identity-Based Signature — Configuration, Testing & Verification
 
-This is a Java project for the SM9 identity-based digital signature standard (GM/T 0044.2), built on the JPBC pairing library. It started as my undergraduate thesis work and was re-organized, tested and documented in November 2026.
-
----
+A systematic verification case study of the SM9 identity-based signature scheme (Chinese national standard GM/T 0044.2), using the SM9 project as a vehicle to explore the limits of test-based verification and the gap between "tests pass" and "system is correct".
 
 ## Background
 
-### Phase 1: Undergraduate Thesis (Sep 2021 – Jun 2022)
-I studied the SM9 standard for my bachelor's thesis at Qilu Normal University, supervised by Associate Professor Yuquan Zhang. At that stage my work focused on:
-- Reading through the GM/T 0044 specification and understanding the mathematical structure of the identity-based signature scheme
-- Mapping the standard curve parameters into the JPBC library configuration, replacing its default Type-A parameter set
-- Getting the full sign/verify flow to run correctly and verifying output against the standard test vector
-- Adding basic boundary checks to avoid obvious crashes from invalid inputs
+This repository documents a two-phase verification exercise:
 
-The core cryptographic implementation was based on open-source reference materials. My thesis did not aim to invent a new algorithm, but to understand how a pairing-based protocol works in practice and make it run reliably under different inputs.
+- **Phase 1 (2021–22, graduation thesis):** Configured an SM9 signature implementation in Java using the JPBC pairing library. Mapped SM9 standard curve parameters into JPBC's Type-A format, verified output against official deterministic test vectors, and added preliminary input validation and abnormal-input tests.
 
-### Phase 2: Systematic Revision (Nov 2026)
-After graduation I attended technical interviews for state-owned enterprise IT positions. I was asked how to design test strategies for distributed systems and how to assess software reliability systematically. I could describe my projects, but I could not answer those methodological questions with confidence.
+- **Phase 2 (2026):** Returned to the project to address a persistent question: if all functional tests pass, how do I know the implementation is actually correct? Expanded the preliminary work into a systematic verification suite: explicit input validation, 37 JUnit tests across six categories, mutation testing, robustness probing, and a batch-processing performance benchmark. Documented what the tests can and cannot prove.
 
-That experience made me realize: I could write code that works on the happy path, but I did not have a clear framework for verifying system-level reliability.
+**Core realisation:** functional test coverage measures exhaustiveness, not correctness. Passing tests do not guarantee the absence of bugs — a limitation that motivates graduate-level training in formal verification and systematic software reliability engineering.
 
-In November 2026 I came back to this project and used it as a concrete case to practice what I had been reading about software testing:
-- I added explicit input validation at every core method entry point, so invalid inputs fail clearly instead of silently
-- I designed 37 JUnit test cases covering normal paths, boundary inputs, exception scenarios, standard conformance and parameter configuration
-- I wrote an English test report documenting the test design and the limitations I found
+&gt; The core cryptographic implementation was based on open-source reference materials from CSDN. This repository does not claim original authorship of the SM9 algorithm; its value lies in the verification methodology applied to an existing implementation.
 
-This exercise confirmed one thing for me: systematic reliability verification requires proper graduate-level training, not just ad-hoc self-study. That is why I am applying for this MSc programme.
+## Repository Structure
 
-> Note: The standard test-vector verification harness (`cmo/test/SM9Test.java`, `SM9WithStandardTestKey`, `KGCWithStandardTestKey`) comes from the reference implementation and is included to reproduce the GM/T 0044 test vector. The JUnit test suite, input validation, project structure reorganization, README and test report are my own work.
+| Directory / File | Description |
+|------------------|-------------|
+| `src/main/java/com/sm9/` | Core SM9 implementation (Java, JPBC) |
+| `src/test/java/com/sm9/` | 6 JUnit test classes, 42 test methods |
+| `batch_multithread/` | Serial and parallel batch benchmark |
+| `docs/TEST_REPORT.md` | Test classification, traceability matrix, results |
+| `docs/MUTATION_TESTING.md` | PITest report and surviving-mutant analysis |
+| `docs/TEST_SPEC.md` | Test objectives, strategy, exit criteria |
+| `docs/LESSONS_LEARNED.md` | Reflections on verification limits |
 
----
+## Quick Start
 
-## What this repository contains
+```bash
+# Compile
+mvn compile
 
-### Core implementation
-- Key generation center (KGC) for signing master keys and user private key extraction
-- Signature generation and verification following GM/T 0044.2
-- Custom curve configuration loaded with SM9 standard parameters, not the JPBC default Type-A curve
+# Run all tests
+mvn test
 
-### Testing work
-5 JUnit test classes, 37 test cases in total:
-- **Functional tests** (6): normal sign-verify round trips, different user identities, repeated signing
-- **Boundary tests** (13): null inputs, empty strings, oversized messages, Unicode identifiers
-- **Exception tests** (7): tampered signatures, wrong public keys, altered messages, signature reuse
-- **Conformance tests** (6): group membership checks for G1/G2/Zr, standard identifier verification
-- **Parameter mapping tests** (5): verification that SM9 parameters are correctly loaded and differ from JPBC defaults
+# Run mutation testing
+mvn test-compile org.pitest:pitest-maven:mutationCoverage
 
-### Documentation
-- `docs/TEST_REPORT.md`: test design approach, coverage analysis and limitations of black-box testing
-- `docs/THESIS_ABSTRACT.md`: original bachelor thesis abstract
-  
----
+** Design Philosophy
+This project treats SM9 not as a product but as a testbed for verification methodology. Every design decision is documented and traceable to a specific risk point:
+Traceability: each test case maps to an identifiable risk (e.g., "cryptographic forgery acceptance"), documented in source comments and the test report.
+Risk-driven testing: tests are designed from failure modes, not from happy-path requirements.
+Honest limitations: the repository explicitly documents what the test suite cannot detect — including protocol-level deviations, mathematical errors that still produce valid-looking outputs, and side-channel leaks.
+** What Was Done
+1. Parameter Mapping & Standard Compliance
+Mapped SM9 standard curve parameters into JPBC's configuration, replacing its default Type-A parameter set. Verified output against the official deterministic test vector from GM/T 0044.2.
+2. Systematic Test Suite
+42 JUnit tests in 6 categories:
+Category 	Count 	Focus 
+Functional	6	Normal sign/verify workflows
+Boundary	13	Null, empty, oversize, unicode edge inputs
+Exception	7	Tampering, wrong keys, replay attacks
+Conformance	6	Standard compliance (G1 membership, pairing equations)
+Parameter Mapping	5	JPBC vs SM9 parameter correctness
+Robustness	5	Malformed encoding, mixed charset, control characters
+3. Mutation Testing (PITest)
+28 of 33 generated mutants were killed (85% mutation coverage, 100% test strength). Five mutants survived, revealing gaps in protocol-level conformance verification and boundary-value tightness. See docs/MUTATION_TESTING.md for per-class analysis.
+4. Performance Exploration
+Batch-processing benchmark exploring SM9 throughput under multithreaded execution. Speedup plateaus well below linear scaling, suggesting sequential bottlenecks in the pairing computation that testing alone cannot diagnose. See batch_multithread/PERFORMANCE_NOTES.md.
+5. Input Validation
+Added explicit null checks and argument validation to core cryptographic methods (KGC.java, SM9.java).
+What Was Not Done (and Why)
+The following are explicitly out of scope. They require methodologies beyond the current skill set — and are part of the motivation for graduate study:
+Formal verification: no model checking, theorem proving, or invariant specification
+Performance optimisation: no algorithmic improvement, native implementation, or GPU acceleration
+Side-channel resistance: no timing analysis, power analysis, or constant-time implementation
+Cryptographic extensions: no encryption, key encapsulation, or additional SM9 modes
+Limitations & Known Issues
+The core implementation is based on reference materials, not original research.
+Functional tests cannot verify protocol-level mathematical correctness.
+Robustness tests reveal that malformed inputs are silently accepted rather than rejected.
+Mutation testing confirms that passing tests do not guarantee correctness.
+The performance benchmark is a learning exercise, not an optimised implementation.
+Licence
+This repository does not include a software licence. The core cryptographic code is derived from publicly shared reference materials (CSDN) and is presented here for educational and verification purposes only. It is not intended for production cryptographic use.
 
-## Running the project
-
-### Requirements
-- JDK 8 or higher
-- Maven 3.6 or higher
-
-> The JPBC library jars are included in the `lib/` directory and referenced via system scope in `pom.xml`, because JPBC 2.0.0 is no longer available on Maven Central. No extra repository setup is needed. The SM3 hash function used by SM9 is provided by BouncyCastle, which resolves normally from Maven Central.
-
-### Run all tests
-mvn clean test
-
-### Run a single test class
--mvn test -Dtest=SM9FunctionalTest
--mvn test -Dtest=SM9BoundaryTest
--mvn test -Dtest=SM9ExceptionTest
--mvn test -Dtest=SM9ConformanceTest
--mvn test -Dtest=ParameterMappingTest
-
-### Run the standard test-vector demo
--The main class reproduces the deterministic test vector from GM/T 0044.2 Appendix D with fixed random values.
--mvn compile exec:java -Dexec.mainClass="com.aa.Main"
--Expected output includes `h2 = h, 验证通过!` and `verify OK`, which confirms the implementation matches the standard specification.
--Verified locally: `mvn test` on Maven 3.9.6 / JDK 11 → 37 tests, 0 failures.
-
----
-
-## Key technical notes
-
-1. **JPBC defaults are not compatible with SM9.** The built-in Type-A curve uses a general-purpose parameter set optimized for speed, but it does not match the SM9 national standard. The field order, subgroup order and base point are all different. This project loads the standard parameters explicitly through a custom `PropertiesParameters` configuration.
-2. **SM3 hash instead of SHA-256.** The signature scheme uses the SM3 cryptographic hash function (GM/T 0004) provided by BouncyCastle, not SHA-256 as used in most common pairing-based constructions.
-3. **Input validation is defensive, not optional.** All public methods check for null or empty arguments and throw explicit `IllegalArgumentException`s. Silent failures from bad inputs are one of the most common and hardest-to-debug issues in cryptographic libraries.
-
----
-
-## Limitations
-
-This is an educational implementation, not production-grade cryptography.
-
-- Black-box functional testing proves the happy path works and common failures behave predictably, but it cannot guarantee full correctness. Subtle arithmetic deviations can still produce internally consistent outputs that pass black-box checks.
-- Error handling is basic. There is input validation, but no systematic failure mode classification or error taxonomy.
-- No formal verification, no mathematical proof of correctness.
-- No performance benchmarking or side-channel resistance analysis.
-
-These limitations are exactly why I want to pursue graduate study in software verification and dependable systems: I want to move beyond trial-and-error testing to structured methodologies for building reliable systems.
-
----
-
-## References
-
-- GM/T 0044-2016: SM9 Identity-Based Cryptographic Algorithm
-- JPBC Library: [http://gas.dia.unisa.it/projects/jpbc/](http://gas.dia.unisa.it/projects/jpbc/)
-
-
-
+# Run single test class
+mvn test -Dtest=SM9FunctionalTest
