@@ -21,6 +21,13 @@ import static org.junit.Assert.*;
  * Verifies that keys and signatures belong to the correct mathematical
  * groups (G1, G2, Zr) as required by the standard.
  */
+/**
+ * Conformance tests for SM9 against GM/T 0044.2 standard.
+ * Traceability: Verifies mathematical correctness of curve parameters, pairing 
+ * equations and key generation.
+ * Risk if violated: Implementation deviates from national standard, producing 
+ * non-interoperable or weak cryptographic output.
+ */
 public class SM9ConformanceTest {
 
     private SM9Curve curve;
