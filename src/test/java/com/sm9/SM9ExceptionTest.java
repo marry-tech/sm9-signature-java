@@ -24,6 +24,13 @@ import static org.junit.Assert.*;
  * Verifies that the implementation correctly rejects invalid cryptographic
  * inputs: tampered signatures, wrong keys, and other attack scenarios.
  */
+/**
+ * Exception and security tests for SM9 signature.
+ * Traceability: Verifies that tampered signatures, wrong keys and replay attacks 
+ * are correctly rejected.
+ * Risk if violated: Cryptographic forgery, identity confusion, or replay attacks 
+ * are accepted as valid.
+ */
 public class SM9ExceptionTest {
 
     private SM9Curve curve;
