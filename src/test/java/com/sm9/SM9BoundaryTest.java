@@ -17,6 +17,12 @@ import static org.junit.Assert.*;
  * Tests edge cases: null inputs, empty strings, oversized messages,
  * and unicode identifiers.
  */
+/**
+ * Boundary tests for SM9 identity-based signature.
+ * Traceability: Verifies component behaviour at the edges of valid input domains.
+ * Risk if violated: Invalid inputs (null, empty, oversize, unicode) produce silent failures 
+ * or incorrect cryptographic output.
+ */
 public class SM9BoundaryTest {
 
     private SM9Curve curve;
