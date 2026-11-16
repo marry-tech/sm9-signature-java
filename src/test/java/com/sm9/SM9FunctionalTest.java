@@ -18,6 +18,11 @@ import static org.junit.Assert.*;
  *
  * Verifies basic correctness of key generation, signing, and verification.
  */
+/**
+ * Functional tests for SM9 signature operations.
+ * Traceability: Verifies core GM/T 0044.2 sign/verify workflow under normal conditions.
+ * Risk if violated: Valid signatures fail verification or invalid signatures are accepted.
+ */
 public class SM9FunctionalTest {
 
     private SM9Curve curve;
