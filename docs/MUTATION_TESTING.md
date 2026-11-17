@@ -49,7 +49,7 @@ Only 2 mutants were generated for this class due to its limited test coverage (3
 
 ## Critical Observations
 
-### Test Strength = 100% is misleading
+### What "100% test strength" does and does not mean
 
 100% test strength means every mutant that was killed was killed by a test that explicitly failed. This sounds ideal, but it is partly an artifact of the small number of classes scanned (3) and the limited mutant operators applied by PITest to Java pairing-based cryptography code. Many complex arithmetic paths in JPBC's underlying library were not mutated at all because they are outside the `com.sm9` package scope.
 
@@ -67,7 +67,7 @@ These are exactly the vulnerabilities that motivated my verification work — an
 
 Mutation testing confirmed two things:
 
-1. **What the test suite does well**: The 37 functional, boundary and exception tests detect a high proportion of simple code-level faults. Input validation and exception-path coverage are relatively strong.
+1. **What the test suite does well**: The 42 functional, boundary and exception tests detect a high proportion of simple code-level faults. Input validation and exception-path coverage are relatively strong.
 
 2. **What the test suite cannot do**: No amount of mutation testing can verify protocol compliance, detect subtle mathematical deviations, or prove absence of bugs in cryptographic software. Surviving mutants in SM9.java exposed that functional correctness and standard conformance are not the same thing. Low line coverage in SM9Curve.java exposed that large portions of the codebase are simply untested.
 
