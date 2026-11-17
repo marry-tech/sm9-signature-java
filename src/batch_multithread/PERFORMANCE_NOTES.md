@@ -14,6 +14,29 @@ This is a learning exercise, not an optimised production benchmark. The objectiv
 | Warm-up | 30 iterations per configuration |
 | Iterations | 100 per configuration (serial) / 15-second fixed-duration (parallel) |
 
+## 2.1 Two measurement conditions (why the README quotes a different number)
+
+The README quotes **≈1067 ms per operation (≈0.9 ops/s)**. That figure was measured on a
+**cold start**: the pairing context — loading the SM9 type-f curve parameters and
+initialising JPBC's pairing — was constructed inside the timed loop and dominates the cost.
+Initialisation does not parallelise, which is why a short parallel batch shows almost no gain.
+
+The figures in this document are **steady-state** numbers: after 30 warm-up iterations the
+pairing context is reused, and only the signing/verification work is timed.
+
+Both numbers are real; they answer different questions:
+
+| Condition | Per-op time | Throughput | What it represents |
+|---|---|---|---|
+| Cold start (context built per op) | ≈1067 ms | ≈0.9 ops/s | What a caller actually experiences on first use |
+| Steady state (context reused) | 41.2 ms | 24.3 ops/s | Throughput ceiling once initialised |
+
+The 3.1x plateau in section 4 therefore describes the **steady-state** regime only. In the
+cold-start regime the serial initialisation cost suppresses parallel speedup entirely —
+which is itself a finding: the expensive part of this implementation is not the cryptographic
+operation but the one-off curve setup, and that is where any real optimisation would have to start.
+
+
 ## 3. Methodology
 Two benchmark classes were implemented:
 - **Sm9Benchmark.java:** Serial execution. Signs and verifies a fixed-size batch of messages sequentially. Establishes baseline throughput.
