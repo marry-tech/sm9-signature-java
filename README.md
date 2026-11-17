@@ -31,6 +31,7 @@ This repository documents a two-phase verification exercise:
 |---|---|
 | `src/main/java/com/sm9/` | Core SM9 implementation (Java, JPBC) |
 | `src/test/java/com/sm9/` | 6 JUnit test classes, 42 test methods |
+| `src/test/java/com/sm9/SM9Test.java` | Legacy manual demo (not part of the JUnit suite) |
 | `src/batch_multithread/` | Serial and parallel batch benchmark |
 | `docs/TEST_REPORT.md` | Test classification, traceability matrix, results |
 | `docs/MUTATION_TESTING.md` | PITest report and surviving-mutant analysis |
