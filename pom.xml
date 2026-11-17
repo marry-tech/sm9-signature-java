@@ -82,7 +82,7 @@
         </targetClasses>
         
         <targetTests>
-            <param>cmo.test.*</param>
+            <param>com.sm9.*</param>
         </targetTests>
         <!-- 1.Only mutate core classes, narrow the scope, and significantly increase the speed. Timeout factor: default is 1.25, and it is recommended to set it to 5 for cryptographic projects-->
         <timeoutFactor>5</timeoutFactor>
