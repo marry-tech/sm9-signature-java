@@ -25,6 +25,21 @@ public class SM9WithStandardTestKey extends SM9 {
     }
 
     @Override
+    public ResultSignature sign(MasterPublicKey masterPublicKey, PrivateKey privateKey, byte[] data)
+    {
+        BigInteger l, h;
+        Element g = mCurve.pairing(mCurve.P1, masterPublicKey.Q);
+        do {
+            BigInteger rr = SM9WithStandardTestKey.r;
+            Element w = g.duplicate().pow(rr);
+            h = SM9Utils.H2(data, w, mCurve.N);
+            l = rr.subtract(h).mod(mCurve.N);
+        } while (l.equals(BigInteger.ZERO));
+        CurveElement s = privateKey.d.duplicate().mul(l);
+        return new ResultSignature(h, s);
+    }
+    
+    @Override
     public boolean verify(MasterPublicKey masterPublicKey, String id, byte[] data, ResultSignature signature)
     {
         // Step1 : check if h in the range [1, N-1]
