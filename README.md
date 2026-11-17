@@ -31,7 +31,7 @@ This repository documents a two-phase verification exercise:
 |---|---|
 | `src/main/java/com/sm9/` | Core SM9 implementation (Java, JPBC) |
 | `src/test/java/com/sm9/` | 6 JUnit test classes, 42 test methods |
-| `batch_multithread/` | Serial and parallel batch benchmark |
+| `src/batch_multithread/` | Serial and parallel batch benchmark |
 | `docs/TEST_REPORT.md` | Test classification, traceability matrix, results |
 | `docs/MUTATION_TESTING.md` | PITest report and surviving-mutant analysis |
 | `docs/TEST_SPEC.md` | Test objectives, strategy, exit criteria |
@@ -89,7 +89,7 @@ Line coverage is 61% overall, but this is dominated by `SM9Curve.java` (16/52), 
 
 ### 4. Performance Exploration
 
-Batch-processing benchmark exploring SM9 throughput under multithreaded execution. Speedup plateaus well below linear scaling, suggesting sequential bottlenecks in the pairing computation that testing alone cannot diagnose. See `batch_multithread/PERFORMANCE_NOTES.md`.
+Batch-processing benchmark exploring SM9 throughput under multithreaded execution. Speedup plateaus well below linear scaling, suggesting sequential bottlenecks in the pairing computation that testing alone cannot diagnose. See `src/batch_multithread/PERFORMANCE_NOTES.md`.
 
 ### 5. Input Validation
 
