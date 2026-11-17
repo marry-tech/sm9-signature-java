@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 /**
  * Parameter mapping tests for SM9 curve configuration in JPBC.
  * Traceability: Verifies that SM9 standard parameters are correctly mapped into 
- * JPBC's Type-A curve format.
+ * JPBC's PropertiesParameters format (type=f).
  * Risk if violated: JPBC default parameters are used instead of SM9 standard 
  * parameters, invalidating all cryptographic operations.
  */
@@ -62,7 +62,7 @@ public class ParameterMappingTest {
         String q = params.getString("q");
 
         // SM9 field order q should be approximately 256 bits
-        // Log2(10) ¡Ö 3.32, so 77 decimal digits ¡Ö 256 bits
+        // log2(10) approx. 3.32, so 77 decimal digits is approx. 256 bits
         assertTrue("SM9 field order should be around 256 bits",
                 q.length() >= 70 && q.length() <= 80);
     }
