@@ -1,4 +1,4 @@
-package cmo.test;
+package com.sm9;
 
 import org.junit.Before;
 import org.junit.Test;
