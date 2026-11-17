@@ -3,8 +3,8 @@ package com.aa;
 
 
 public class Main {
-	 public static void main(String[] args)
-	/***    {
+	/***   public static void main(String[] args)
+	  {
         SM9Test.test(0, false); //SM9测试，随机生成密钥
 
 	        SM9Test.test(1, false); //SM9测试，验证《GMT 0044-2016 SM9标识密码算法：第5部分 参数定义》中的测试数据
