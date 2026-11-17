@@ -13,7 +13,7 @@ At the very beginning I used the default JPBC Type-A curve by accident. The code
 This is a special case of the "silent failure" problem: the system looks like it works, but it is producing wrong results. It made me realize that parameter and configuration verification deserves its own set of tests, separate from functional tests.
 
 ## 3. More test cases ≠ guaranteed reliability
-When I started the 2026 revision, my plan was simple: write as many test cases as I could. By the time I hit 37 I stopped and asked myself: what am I actually proving here?
+When I started the 2026 revision, my plan was simple: write as many test cases as I could. By the time I hit 42 I stopped and asked myself: what am I actually proving here?
 
 The answer was: only the cases I already thought of. Black-box testing can show that known scenarios work, but it cannot tell you about the unknown unknowns. To really verify a system, you need methodology, not just volume.
 
