@@ -85,6 +85,8 @@ Mapped the SM9 standard curve parameters into JPBC's configuration, replacing it
 
 28 of 33 generated mutants were killed (mutation score 84.8%, test strength 100%). Five mutants survived, revealing gaps in protocol-level conformance verification and boundary-value tightness. See `docs/MUTATION_TESTING.md` for per-class analysis.
 
+Line coverage is 61% overall, but this is dominated by `SM9Curve.java` (16/52), which consists largely of declarative parameter constants rather than branching logic. Mutation score on the behavioural classes — `KGC` 92%, `SM9` 84% — is the more meaningful signal.
+
 ### 4. Performance Exploration
 
 Batch-processing benchmark exploring SM9 throughput under multithreaded execution. Speedup plateaus well below linear scaling, suggesting sequential bottlenecks in the pairing computation that testing alone cannot diagnose. See `batch_multithread/PERFORMANCE_NOTES.md`.
