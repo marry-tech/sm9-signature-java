@@ -133,21 +133,50 @@ public class SM9ConformanceTest {
     }
 
     @Test
-    public void testKeyExtractionWithStandardIdentifier() throws Exception {
-        // Using a common identifier format
-        String standardId = "Alice";
-        PrivateKey privateKey = kgc.genPrivateKey(
-                masterKeyPair.getPrivateKey(), standardId, PrivateKeyType.KEY_SIGN);
+    public void testOfficialTestVectorGMT00442() throws Exception {
+        // Deterministic test vector from GM/T 0044.5-2016, Annex A (worked example
+        // of the signature algorithm). Fixing both the master key k and the nonce r
+        // makes signing fully deterministic, so the output can be compared
+        // byte-for-byte against the values published in the standard.
+        SM9Curve cv = new SM9Curve();
+        KGCWithStandardTestKey stdKgc = new KGCWithStandardTestKey(cv);
+        SM9WithStandardTestKey stdSm9 = new SM9WithStandardTestKey(cv);
 
-        assertNotNull(privateKey);
-        assertNotNull(privateKey.d);
+        KGCWithStandardTestKey.k = new java.math.BigInteger(
+                "0130E78459D78545CB54C587E02CF480CE0B66340F319F348A1D5B1F2DC5F4", 16);
+        SM9WithStandardTestKey.r = new java.math.BigInteger(
+                "033C8616B06704813203DFD00965022ED15975C662337AED648835DC4B1CBE", 16);
 
-        byte[] message = "Standard conformance message".getBytes();
-        ResultSignature signature = sm9.sign(
-                masterKeyPair.getPublicKey(), privateKey, message);
+        MasterKeyPair stdKeyPair = stdKgc.genSignMasterKeyPair();
 
-        boolean isValid = sm9.verify(
-                masterKeyPair.getPublicKey(), standardId, message, signature);
-        assertTrue("Standard identifier must produce verifiable signature", isValid);
+        // Published x-coordinate of Ppub-s = [ks]P2
+        // (G2 points live over a quadratic extension field, so the serialised
+        //  point is longer than one 256-bit component; assert on the prefix.)
+        String ppubHex = SM9Utils.toHexString(SM9Utils.G2ElementToByte(
+                (it.unisa.dia.gas.plaf.jpbc.field.curve.CurveElement) stdKeyPair.getPublicKey().Q
+        )).replace(" ", "");
+        assertTrue("Ppub-s must match the GM/T 0044.5 test vector",
+                ppubHex.startsWith("9F64080B3084F733E48AFF4B41B565011CE0711C5E392CFB0AB1B6791B94C408"));
+
+        PrivateKey stdPrivateKey = stdKgc.genPrivateKey(
+                stdKeyPair.getPrivateKey(), "Alice", PrivateKeyType.KEY_SIGN);
+
+        ResultSignature stdSignature = stdSm9.sign(
+                stdKeyPair.getPublicKey(), stdPrivateKey, "Chinese IBS standard".getBytes());
+
+        // Published h = H2(M || w, N)
+        assertEquals("Signature h must match the published test vector",
+                new java.math.BigInteger(
+                        "823C4B21E4BD2DFE1ED92C606653E996668563152FC33F55D7BFBB9BD9705ADB", 16),
+                stdSignature.h);
+
+        // Published x-coordinate of S = [l]ds_A
+        String sHex = SM9Utils.toHexString(SM9Utils.G1ElementToBytes(stdSignature.s)).replace(" ", "");
+        assertTrue("Signature S must match the published test vector",
+                sHex.startsWith("73BF96923CE58B6AD0E13E9643A406D8EB98417C50EF1B29CEF9ADB48B6D598C"));
+
+        assertTrue("Official test vector signature must verify",
+                stdSm9.verify(stdKeyPair.getPublicKey(), "Alice",
+                        "Chinese IBS standard".getBytes(), stdSignature));
     }
 }
