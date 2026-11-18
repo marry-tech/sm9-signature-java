@@ -190,7 +190,7 @@ public class SM9Test {
 	            Main.showMsg("verify failed");
 	    }
 		public static void test(int testType, boolean allowReconstructData) {
-			// TODO Auto-generated method stub
+			
 			
 		
 		
