@@ -77,6 +77,7 @@ Mapped the SM9 standard curve parameters into JPBC's configuration, replacing it
 ### 2. Systematic Test Suite
 
 42 JUnit tests in 6 categories:
+All test cases are designed from failure modes and risk points, not just happy-path functionality:
 
 | Category | Count | Focus |
 |---|---|---|
@@ -113,6 +114,8 @@ The following are explicitly out of scope. They require methodologies beyond the
 - **Performance optimisation:** no algorithmic improvement, native implementation, or GPU acceleration
 - **Side-channel resistance:** no timing analysis, power analysis, or constant-time implementation
 - **Cryptographic extensions:** no encryption, key encapsulation, or additional SM9 modes
+
+These gaps in formal methods and software reliability engineering are exactly what I aim to address through graduate-level study.
 
 ## Limitations & Known Issues
 
