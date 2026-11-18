@@ -15,14 +15,14 @@ A systematic verification case study of the SM9 identity-based signature scheme 
 | Signature verification | **≈1067 ms** per operation, single-threaded (≈0.9 ops/s) |
 | Parallel scaling | 0.9 → 2 ops/s from 1 to 4 threads; 8 threads shows no further gain |
 | Standard | GM/T 0044.2 (SM9 identity-based signature, part 2) |
-| Official test vector | `h` and `S` match **GM/T 0044.5 Annex A byte-for-byte** — asserted in `SM9ConformanceTest#testOfficialTestVectorGMT00442` |
+| Official test vector | `h` and `S` match **GM/T 0044.5 Annex A byte-for-byte** — asserted in `SM9ConformanceTest#testOfficialTestVectorGMT00445AnnexA` |
 
 
 ## Background
 
 This repository documents a two-phase verification exercise:
 
-- **Phase 1 (2021–22, graduation thesis):** Configured an SM9 signature implementation in Java using the JPBC pairing library. JPBC's default Type-A curve (k=2, supersingular, symmetric pairing) is structurally incompatible with SM9's Type-F parameters (BN curve, k=12, asymmetric R-ate pairing), so the standard parameter set was loaded explicitly via `PropertiesParameters`. Output was verified against the official deterministic test vectors from GM/T 0044.2, with preliminary input validation and abnormal-input tests added.
+- **Phase 1 (2021–22, graduation thesis):** Configured an SM9 signature implementation in Java using the JPBC pairing library. JPBC's default Type-A curve (k=2, supersingular, symmetric pairing) is structurally incompatible with SM9's Type-F parameters (BN curve, k=12, asymmetric R-ate pairing), so the standard parameter set was loaded explicitly via `PropertiesParameters`. Output was verified against the official deterministic test vectors from GM/T 0044.5 Annex A, with preliminary input validation and abnormal-input tests added.
 - **Phase 2 (2026):** Returned to the project to address a persistent question: if all functional tests pass, how do I know the implementation is actually correct? Expanded the preliminary work into a systematic verification suite: explicit input validation, 42 JUnit tests across six categories, mutation testing, robustness probing, and a batch-processing performance benchmark. Documented what the tests can and cannot prove.
 
 **Core realisation:** functional test coverage measures exhaustiveness, not correctness. Passing tests do not guarantee the absence of bugs — a limitation that motivates graduate-level training in formal verification and systematic software reliability engineering.
@@ -34,6 +34,7 @@ This repository documents a two-phase verification exercise:
 | Directory / File | Description |
 |---|---|
 | `src/main/java/com/sm9/` | Core SM9 implementation (Java, JPBC) |
+| `src/main/java/com/sm9pairing/`, `com/transfer/`, `com/aa/` | Pairing backend, hex conversion utility, console output helper (retained from the original implementation) |
 | `src/test/java/com/sm9/` | 6 JUnit test classes, 42 test methods |
 | `src/test/java/com/sm9/SM9Test.java` | Legacy manual demo (not part of the JUnit suite) |
 | `src/batch_multithread/` | Serial and parallel batch benchmark |
@@ -51,14 +52,14 @@ mvn compile
 # Run all tests
 mvn test
 
-Every push to `main` re-runs this suite on GitHub Actions; the badge at the top of this file always reflects the latest result.
-
 # Run a single test class
 mvn test -Dtest=SM9FunctionalTest
 
 # Run mutation testing
 mvn test-compile org.pitest:pitest-maven:mutationCoverage
 ```
+
+Every push to `main` re-runs this suite on GitHub Actions; the badge at the top of this file always reflects the latest result.
 
 ## Design Philosophy
 
@@ -72,7 +73,7 @@ This project treats SM9 not as a product but as a testbed for verification metho
 
 ### 1. Parameter Mapping & Standard Compliance
 
-Mapped the SM9 standard curve parameters into JPBC's configuration, replacing its default Type-A parameter set. Because Type-A (k=2, symmetric) cannot represent the SM9 BN curve (k=12, asymmetric R-ate pairing), the standard parameters are loaded explicitly via `PropertiesParameters` (type=f). Output verified against the official deterministic test vectors from GM/T 0044.2: SM9ConformanceTest#testOfficialTestVectorGMT00442 asserts the signature h and S byte-for-byte against GM/T 0044.5 Annex A.
+Mapped the SM9 standard curve parameters into JPBC's configuration, replacing its default Type-A parameter set. Because Type-A (k=2, symmetric) cannot represent the SM9 BN curve (k=12, asymmetric R-ate pairing), the standard parameters are loaded explicitly via `PropertiesParameters` (type=f). Output verified against the official deterministic test vectors from GM/T 0044.5 Annex A: SM9ConformanceTest#testOfficialTestVectorGMT00445AnnexA asserts the signature h and S byte-for-byte against the published values.
 
 
 ### 2. Systematic Test Suite
@@ -93,7 +94,7 @@ Mapped the SM9 standard curve parameters into JPBC's configuration, replacing it
 
 28 of 33 generated mutants were killed (mutation score 84.8%, test strength 100%). Five mutants survived, revealing gaps in protocol-level conformance verification and boundary-value tightness. See `docs/MUTATION_TESTING.md` for per-class analysis.
 
-Line coverage is 61% overall, but this is dominated by `SM9Curve.java` (16/52), which consists largely of declarative parameter constants rather than branching logic. Mutation score on the behavioural classes — `KGC` 92%, `SM9` 84% — is the more meaningful signal.
+Line coverage is 61% overall (72 of 118 lines in the mutated classes), but this is dominated by `SM9Curve.java`, which consists largely of declarative parameter constants rather than branching logic. Mutation score on the behavioural classes — `KGC` 92%, `SM9` 84% — is the more meaningful signal.
 
 ### 4. Performance Exploration
 
