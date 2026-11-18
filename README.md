@@ -51,6 +51,8 @@ mvn compile
 # Run all tests
 mvn test
 
+Every push to `main` re-runs this suite on GitHub Actions; the badge at the top of this file always reflects the latest result.
+
 # Run a single test class
 mvn test -Dtest=SM9FunctionalTest
 
