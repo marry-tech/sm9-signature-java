@@ -24,7 +24,7 @@ The following are explicitly out of scope and documented as limitations:
 - Formal proof of pairing computation correctness
 - Timing or side-channel resistance
 - Comparison with independently implemented SM9 verifiers
-- Performance under adversarial load (see `src/batch_multithread/PERFORMANCE_NOTES.md` for preliminary exploration)
+- Performance under adversarial load (see `docs/PERFORMANCE_NOTES.md` for preliminary exploration)
 
 ## 2. Test Strategy
 
