@@ -92,8 +92,7 @@ Mapped the SM9 standard curve parameters into JPBC's configuration, replacing it
 
 28 of 33 generated mutants were killed (mutation score 84.8%, test strength 100%). Five mutants survived, revealing gaps in protocol-level conformance verification and boundary-value tightness. See `docs/MUTATION_TESTING.md` for per-class analysis.
 
-Line coverage is 61% overall (72 of 118 lines in the mutated classes), but this is dominated by `SM9Curve.java`, which consists largely of declarative parameter constants rather than branching logic. Mutation score on the behavioural classes — `KGC` 92%, `SM9` 84% — is the more meaningful signal.
-
+Mutation score is the more meaningful measure of test strength. Core behavioural classes reach 92% (KGC) and 84% (SM9), with all 5 surviving mutants fully analyzed in `docs/MUTATION_TESTING.md`.
 
 ### 4. Performance Exploration
 
