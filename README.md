@@ -96,9 +96,13 @@ Mapped the SM9 standard curve parameters into JPBC's configuration, replacing it
 
 Line coverage is 61% overall (72 of 118 lines in the mutated classes), but this is dominated by `SM9Curve.java`, which consists largely of declarative parameter constants rather than branching logic. Mutation score on the behavioural classes — `KGC` 92%, `SM9` 84% — is the more meaningful signal.
 
+
 ### 4. Performance Exploration
 
-Batch-processing benchmark exploring SM9 throughput under multithreaded execution. Speedup plateaus well below linear scaling, suggesting sequential bottlenecks in the pairing computation that testing alone cannot diagnose. See `src/batch_multithread/PERFORMANCE_NOTES.md`.
+Batch-processing benchmark exploring SM9 throughput under multithreaded execution. The scripts are standalone experiments kept outside the Maven build (`src/batch_multithread/`), so they are not part of the 42-test suite and do not run in CI — they are evidence of measurement rather than of automated testing.
+
+Observed scaling is 0.9 → 2 ops/s from 1 to 4 threads, with no further gain at 8 threads. That is far below linear, consistent with a sequential fraction dominated by the pairing computation — an Amdahl's-law limit that measurement alone cannot remove. Two measurement conditions (cold start and steady state) are reported separately in `src/batch_multithread/PERFORMANCE_NOTES.md`, because the first run absorbs a one-off curve-setup cost that later runs do not.
+
 
 ### 5. Input Validation
 
