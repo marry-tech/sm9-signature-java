@@ -23,7 +23,7 @@ The design follows the basic testing principles I learned in my undergraduate So
 | Functional tests | 6 | Normal key generation, signing, verification with valid inputs |
 | Boundary tests | 13 | Null values, empty strings, oversized messages, Unicode user IDs |
 | Exception tests | 7 | Tampered signatures, wrong public keys, altered messages, signature reuse |
-| Conformance tests | 6 | Group membership checks for G1 / G2 / Zr, standard identifier validation |
+| Conformance tests | 6 | Official GM/T 0044.5 test vector (h and S byte-for-byte), group membership checks, standard identifier validation |
 | Parameter mapping tests | 5 | Curve parameter validation, comparison against JPBC Type-A defaults |
 | Robustness tests | 5 | Malformed encoding, mixed charset, control characters, whitespace identities |
 | **Total** | **42** | |
