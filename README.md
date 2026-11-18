@@ -2,7 +2,7 @@
 
 [![build](https://github.com/marry-tech/sm9-signature-java/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/marry-tech/sm9-signature-java/actions/workflows/build.yml)
 
-A systematic verification case study of the SM9 identity-based signature scheme (Chinese national standard GM/T 0044.2), using the SM9 project as a vehicle to explore the limits of test-based verification and the gap between "tests pass" and "system is correct".
+This repository presents a systematic verification case study of the SM9 identity-based signature scheme (Chinese national standard GM/T 0044.2). Built on the JPBC pairing library, it expands a baseline implementation with a rigorous test suite, mutation analysis, standard conformance checks and performance benchmarks, to explore the boundary between "tests pass" and "implementation correctness".
 
 > **Last updated: November 2026** — undergraduate thesis project (2021–22), revisited in 2026 as a systematic verification exercise.
 
@@ -26,8 +26,6 @@ This repository documents a two-phase verification exercise:
 - **Phase 2 (2026):** Returned to the project to address a persistent question: if all functional tests pass, how do I know the implementation is actually correct? Expanded the preliminary work into a systematic verification suite: explicit input validation, 42 JUnit tests across six categories, mutation testing, robustness probing, and a batch-processing performance benchmark. Documented what the tests can and cannot prove.
 
 **Core realisation:** functional test coverage measures exhaustiveness, not correctness. Passing tests do not guarantee the absence of bugs — a limitation that motivates graduate-level training in formal verification and systematic software reliability engineering.
-
-> The core cryptographic implementation was based on open-source reference materials from CSDN. This repository does not claim original authorship of the SM9 algorithm; its value lies in the verification methodology applied to an existing implementation.
 
 ## Repository Structure
 
@@ -119,6 +117,7 @@ The following are explicitly out of scope. They require methodologies beyond the
 
 ## Limitations & Known Issues
 
+- The baseline cryptographic implementation is derived from publicly available reference materials. This work focuses on verification methodology and test system construction, not original cryptographic algorithm research.
 - The core implementation is based on reference materials, not original research.
 - Functional tests cannot verify protocol-level mathematical correctness.
 - Robustness tests reveal that malformed inputs are silently accepted rather than rejected.
