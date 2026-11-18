@@ -68,7 +68,7 @@ This project treats SM9 not as a product but as a testbed for verification metho
 
 ### 1. Parameter Mapping & Standard Compliance
 
-Mapped the SM9 standard curve parameters into JPBC's configuration, replacing its default Type-A parameter set. Because Type-A (k=2, symmetric) cannot represent the SM9 BN curve (k=12, asymmetric R-ate pairing), the standard parameters are loaded explicitly via `PropertiesParameters` (type=f). Output verified against the official deterministic test vectors from GM/T 0044.2：SM9ConformanceTest#testOfficialTestVectorGMT00442 asserts the signature h and S byte-for-byte against GM/T 0044.5 Annex A.
+Mapped the SM9 standard curve parameters into JPBC's configuration, replacing its default Type-A parameter set. Because Type-A (k=2, symmetric) cannot represent the SM9 BN curve (k=12, asymmetric R-ate pairing), the standard parameters are loaded explicitly via `PropertiesParameters` (type=f). Output verified against the official deterministic test vectors from GM/T 0044.2: SM9ConformanceTest#testOfficialTestVectorGMT00442 asserts the signature h and S byte-for-byte against GM/T 0044.5 Annex A.
 
 
 ### 2. Systematic Test Suite
