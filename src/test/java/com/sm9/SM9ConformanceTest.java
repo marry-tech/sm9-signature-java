@@ -133,7 +133,7 @@ public class SM9ConformanceTest {
     }
 
     @Test
-    public void testOfficialTestVectorGMT00442() throws Exception {
+    public void testOfficialTestVectorGMT00445AnnexA() throws Exception {
         // Deterministic test vector from GM/T 0044.5-2016, Annex A (worked example
         // of the signature algorithm). Fixing both the master key k and the nonce r
         // makes signing fully deterministic, so the output can be compared
