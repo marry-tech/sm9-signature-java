@@ -1,4 +1,4 @@
-[# SM9 Identity-Based Signature — Configuration, Testing & Verification
+# SM9 Identity-Based Signature — Configuration, Testing & Verification
 
 [![build](https://github.com/marry-tech/sm9-signature-java/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/marry-tech/sm9-signature-java/actions/workflows/build.yml)
 
