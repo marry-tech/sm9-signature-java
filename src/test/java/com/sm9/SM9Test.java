@@ -191,10 +191,6 @@ public class SM9Test {
 	    }
 		public static void test(int testType, boolean allowReconstructData) {
 			
-			
-		
-		
-		
 		    SM9Curve sm9Curve = new SM9Curve();
 		    Main.showMsg(sm9Curve.toString());
 
