@@ -1,4 +1,4 @@
-package cmo.test;
+package com.sm9.batch;
 
 import com.sm9.KGC;
 import com.sm9.MasterKeyPair;
