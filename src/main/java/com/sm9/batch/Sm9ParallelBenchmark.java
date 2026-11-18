@@ -1,4 +1,4 @@
-package cmo.test;
+package com.sm9.batch;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
