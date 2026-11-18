@@ -21,7 +21,7 @@ public class Sm9ParallelBenchmark {
         int[] threadCounts = {1, 2, 4, 8};
         int secondsPerConfig = 15;
 
-        // 主线程：生成一套密钥和一个签名，序列化成字节供所有线程重建
+        // Main thread: generate one key pair and one signature, then serialise
         SM9Curve setupCurve = new SM9Curve();
         KGC setupKgc = new KGC(setupCurve);
         MasterKeyPair mkp = setupKgc.genSignMasterKeyPair();
@@ -46,7 +46,7 @@ public class Sm9ParallelBenchmark {
             for (int t = 0; t < n; t++) {
                 pool.submit(() -> {
                     try {
-                        // 关键：每个线程创建自己的SM9Curve/SM9实例（JPBC非线程安全）
+                        // Critical: every thread builds its own SM9Curve/SM9 instance (JPBC is not thread-safe)
                         SM9Curve curve = new SM9Curve();
                         SM9 sm9 = new SM9(curve);
                         MasterPublicKey mpk = MasterPublicKey.fromByteArray(curve, mpkBytes);
