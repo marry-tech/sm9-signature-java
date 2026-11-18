@@ -1,5 +1,7 @@
 # SM9 Identity-Based Signature — Configuration, Testing & Verification
 
+[![build](https://github.com/marry-tech/sm9-signature-java/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/marry-tech/sm9-signature-java/actions/workflows/build.yml)
+
 A systematic verification case study of the SM9 identity-based signature scheme (Chinese national standard GM/T 0044.2), using the SM9 project as a vehicle to explore the limits of test-based verification and the gap between "tests pass" and "system is correct".
 
 > **Last updated: November 2026** — undergraduate thesis project (2021–22), revisited in 2026 as a systematic verification exercise.
