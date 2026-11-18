@@ -37,7 +37,7 @@ This repository documents a two-phase verification exercise:
 | `src/main/java/com/sm9pairing/`, `com/transfer/`, `com/aa/` | Pairing backend, hex conversion utility, console output helper (retained from the original implementation) |
 | `src/test/java/com/sm9/` | 6 JUnit test classes, 42 test methods |
 | `src/test/java/com/sm9/SM9Test.java` | Legacy manual demo (not part of the JUnit suite) |
-| `src/batch_multithread/` | Serial and parallel batch benchmark |
+| `src/main/java/com/sm9/batch/` | Serial and parallel batch benchmark (compiled in CI) |
 | `docs/TEST_REPORT.md` | Test classification, traceability matrix, results |
 | `docs/MUTATION_TESTING.md` | PITest report and surviving-mutant analysis |
 | `docs/TEST_SPEC.md` | Test objectives, strategy, exit criteria |
@@ -99,9 +99,9 @@ Line coverage is 61% overall (72 of 118 lines in the mutated classes), but this 
 
 ### 4. Performance Exploration
 
-Batch-processing benchmark exploring SM9 throughput under multithreaded execution. The scripts are standalone experiments kept outside the Maven build (`src/batch_multithread/`), so they are not part of the 42-test suite and do not run in CI — they are evidence of measurement rather than of automated testing.
+The benchmark sources compile as part of the Maven build (`src/main/java/com/sm9/batch/`), but they are not part of the 42-test suite and are not executed in CI.
 
-Observed scaling is 0.9 → 2 ops/s from 1 to 4 threads, with no further gain at 8 threads. That is far below linear, consistent with a sequential fraction dominated by the pairing computation — an Amdahl's-law limit that measurement alone cannot remove. Two measurement conditions (cold start and steady state) are reported separately in `src/batch_multithread/PERFORMANCE_NOTES.md`, because the first run absorbs a one-off curve-setup cost that later runs do not.
+Observed scaling is 0.9 → 2 ops/s from 1 to 4 threads, with no further gain at 8 threads. That is far below linear, consistent with a sequential fraction dominated by the pairing computation — an Amdahl's-law limit that measurement alone cannot remove. Two measurement conditions (cold start and steady state) are reported separately in `docs/PERFORMANCE_NOTES.md`, because the first run absorbs a one-off curve-setup cost that later runs do not.
 
 
 ### 5. Input Validation
