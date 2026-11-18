@@ -21,6 +21,12 @@ The README quotes **≈1067 ms per operation (≈0.9 ops/s)**. That figure was m
 initialising JPBC's pairing — was constructed inside the timed loop and dominates the cost.
 Initialisation does not parallelise, which is why a short parallel batch shows almost no gain.
 
+The parallel figures quoted in the README (0.9 → 2 ops/s from 1 to 4 threads, no
+further gain at 8) come from the cold-start regime: the per-operation context
+construction is a serial section, so Amdahl's law caps the speedup almost
+immediately. The steady-state regime does show real scaling (2.72x at 4 threads,
+3.07x at 8), as measured in section 4.
+
 The figures in this document are **steady-state** numbers: after 30 warm-up iterations the
 pairing context is reused, and only the signing/verification work is timed.
 
