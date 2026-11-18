@@ -71,6 +71,6 @@ Mutation testing confirmed two things:
 
 2. **What the test suite cannot do**: No amount of mutation testing can verify protocol compliance, detect subtle mathematical deviations, or prove absence of bugs in cryptographic software. Surviving mutants in SM9.java exposed that functional correctness and standard conformance are not the same thing. Low line coverage in SM9Curve.java exposed that large portions of the codebase are simply untested.
 
-This experiment reinforces the central argument of my verification work: testing is necessary but insufficient. Moving from "tests pass" to "system is correct" requires graduate-level training in formal specification, model-based verification and rigorous software engineering methodology — which is why I am applying to Politecnico di Milano.
+This experiment reinforces the central argument of my verification work: testing is necessary but insufficient. Moving from "tests pass" to "system is correct" requires graduate-level training in formal specification, model-based verification and rigorous software engineering methodology.
 
 
