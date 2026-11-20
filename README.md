@@ -120,7 +120,6 @@ These gaps in formal methods and software reliability engineering are exactly wh
 ## Limitations & Known Issues
 
 - The baseline cryptographic implementation is derived from publicly available reference materials. This work focuses on verification methodology and test system construction, not original cryptographic algorithm research.
-- The core implementation is based on reference materials, not original research.
 - Functional tests cannot verify protocol-level mathematical correctness.
 - Robustness tests reveal that malformed inputs are silently accepted rather than rejected.
 - Mutation testing confirms that passing tests do not guarantee correctness.
